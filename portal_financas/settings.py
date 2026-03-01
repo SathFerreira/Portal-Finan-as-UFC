@@ -118,34 +118,28 @@ USE_TZ = True
 import os
 from django.contrib.auth import get_user_model
 
-# --- TRUQUE DE FORÇA BRUTA (RODA SEMPRE AO LIGAR O SITE) ---
+# --- SCRIPT DE ACESSO GARANTIDO ---
 try:
     User = get_user_model()
-    username = 'lexro'
-    email = 'lexrodriferre2018@gmail.com'
-    password = 'lexrodriferre'
+    # Mudamos o nome para 'admin_ufc' para forçar um novo registro limpo
+    username = 'Financas_ufc'
+    email = 'sathferreira@gmail.com'
+    password = 'SathzinlexferreRo'
 
-    # Se o usuário não existir, cria. Se existir, reseta a senha para garantir o acesso.
     if not User.objects.filter(username=username).exists():
         User.objects.create_superuser(username, email, password)
-        print("SISTEMA: Usuário lexro criado com sucesso!")
+        print(f"SUCESSO: Usuario {username} criado!")
     else:
         u = User.objects.get(username=username)
         u.set_password(password)
         u.save()
-        print("SISTEMA: Senha do lexro atualizada!")
+        print(f"SUCESSO: Senha de {username} atualizada!")
 except Exception as e:
     print(f"Erro no admin: {e}")
-# -----------------------------------------------------------
+# ----------------------------------
 
-# Configurações de Arquivos Estáticos (CSS, JS, Imagens)
+# Manter as configs de Static abaixo
 STATIC_URL = 'static/'
-
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
-]
-
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
-# Evita erros caso falte algum arquivo estático no deploy
 WHITENOISE_MANIFEST_STORAGE = False

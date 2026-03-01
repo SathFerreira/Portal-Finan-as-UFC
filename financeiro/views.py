@@ -57,92 +57,43 @@ def materiais(request):
 def popular_banco_secreto(request):
     try:
         # 1. LINKS ESSENCIAIS (Manteve igual, pois passou sem erros)
+       def popular_banco_secreto(request):
+    try:
+        # 1. LINKS ESSENCIAIS
+        # Removemos para garantir que os ícones e descrições fiquem atualizados
+        LinkEssencial.objects.all().delete()
         links = [
             {"nome": "SIGAA", "descricao": "Coração da vida acadêmica. Matrículas e histórico.", "url": "https://si3.ufc.br/sigaa/", "icone": "fas fa-graduation-cap"},
             {"nome": "Portal da PRAE", "descricao": "Editais de bolsas e auxílios para estudantes.", "url": "https://prae.ufc.br/", "icone": "fas fa-hand-holding-heart"},
             {"nome": "Restaurante Universitário (RU)", "descricao": "Cardápios, horários e recarga do RU.", "url": "https://www.ufc.br/restaurante/", "icone": "fas fa-utensils"},
         ]
         for item in links:
-            LinkEssencial.objects.get_or_create(nome=item['nome'], defaults={'descricao': item['descricao'], 'url': item['url'], 'icone': item['icone']})
+            LinkEssencial.objects.create(**item)
+
+        # 2. BOLSAS (ADICIONADO O LOOP DE SALVAMENTO)
         bolsas = [
-            {
-                "titulo": "Bolsa de Iniciação Acadêmica (BIA 2026)", 
-                "orgao_emissor": "PRAE (Pró-Reitoria de Assistência Estudantil)", 
-                "tipo": "Auxílio Estudantil", 
-                "link_edital": "https://prae.ufc.br/pt/edital-no-01-2026-prae-ufc-bolsa-de-iniciacao-academica/", 
-                "descricao": "Destinada a estudantes de graduação presencial em situação de vulnerabilidade socioeconômica comprovada pela PRAE. Exige dedicação de 12 horas semanais em projetos acadêmicos e não permite acúmulo com outras bolsas ou emprego formal. Benefício de R$ 700,00 mensais com vigência até 31 de dezembro de 2026."
-            },
-            {
-                "titulo": "Programa de Iniciação à Docência (PID 2026)", 
-                "orgao_emissor": "PROGRAD (Pró-Reitoria de Graduação)", 
-                "tipo": "Monitoria", 
-                "link_edital": "https://prograd.ufc.br/pt/edital-pid-no-19-2025-distribuicao-das-vagas-e-pontuacao-da-selecao-de-projetos-de-monitoria-de-iniciacao-a-docencia-em-2026/", 
-                "descricao": "Voltada para alunos de graduação que desejam atuar como monitores, auxiliando professores no processo de ensino-aprendizagem das disciplinas. Há disponibilidade de vagas remuneradas (bolsa mensal) e voluntárias, dependendo da classificação no processo seletivo do departamento."
-            },
-            {
-                "titulo": "Programa de Bolsas de Extensão Universitária 2026", 
-                "orgao_emissor": "PREX (Pró-Reitoria de Extensão)", 
-                "tipo": "Extensão", 
-                "link_edital": "https://prex.ufc.br/pt/prex-lanca-edital-do-programa-de-bolsas-de-extensao-universitaria-2026/", 
-                "descricao": "Destinada a estudantes que atuarão em projetos e programas de extensão previamente aprovados e cadastrados na PREX, promovendo a interação entre a universidade e a sociedade. Carga horária de 12 horas semanais. Benefício de R$ 700,00 mensais (vigência de abril a dezembro de 2026)."
-            },
-            {
-                "titulo": "Programa Institucional de Bolsas de Iniciação Científica (PIBIC 2025/2026)", 
-                "orgao_emissor": "PRPPG (Pró-Reitoria de Pesquisa e Pós-Graduação)", 
-                "tipo": "Iniciação Científica", 
-                "link_edital": "https://prppg.ufc.br/pt/prppg-editais-pibic/", 
-                "descricao": "Focada em despertar a vocação científica e incentivar talentos potenciais entre estudantes de graduação. O aluno atua em um projeto de pesquisa sob a orientação de um professor qualificado. Benefício de R$ 700,00 mensais financiadas por CNPq, FUNCAP ou pela própria UFC."
-            },
-            {
-                "titulo": "Programa Bolsa de Incentivo ao Desporto 2026", 
-                "orgao_emissor": "SESP-UFC (Secretaria de Esportes) / PRAE", 
-                "tipo": "Auxílio Estudantil", 
-                "link_edital": "https://desporto.ufc.br/pt/com-100-vagas-secretaria-de-esportes-da-ufc-sesp-ufc-e-pro-reitoria-de-assistencia-estudantil-prae-lancam-edital-para-o-programa-bolsa-de-incentivo-ao-desporto-2026/", 
-                "descricao": "Voltada para o fomento e apoio à prática esportiva universitária. Ofertará 100 vagas para estudantes participarem de atividades desportivas representando a universidade. Vigência de 10 meses (de março a dezembro de 2026)."
-            },
-            {
-                "titulo": "Auxílio Moradia", 
-                "orgao_emissor": "PRAE (Pró-Reitoria de Assistência Estudantil)", 
-                "tipo": "Auxílio Estudantil", 
-                "link_edital": "https://prae.ufc.br/pt/auxilio-moradia/", 
-                "descricao": "Destinado a estudantes de graduação presencial em situação de vulnerabilidade socioeconômica, cujas famílias residam em municípios diferentes da sede do campus onde estudam. O benefício é uma ajuda de custo mensal para despesas com aluguel e moradia."
-            },
-            {
-                "titulo": "Auxílio Creche", 
-                "orgao_emissor": "PRAE (Pró-Reitoria de Assistência Estudantil)", 
-                "tipo": "Auxílio Estudantil", 
-                "link_edital": "https://prae.ufc.br/pt/auxilio-creche/", 
-                "descricao": "Voltado para estudantes (mães ou pais) de graduação presencial em situação de vulnerabilidade, que possuam filhos sob sua guarda com idade entre 6 meses e 3 anos e 11 meses. Suporte financeiro mensal."
-            },
-            {
-                "titulo": "Isenção da Taxa do Restaurante Universitário (RU)", 
-                "orgao_emissor": "PRAE (Pró-Reitoria de Assistência Estudantil)", 
-                "tipo": "Auxílio Estudantil", 
-                "link_edital": "https://prae.ufc.br/pt/restaurante-universitario-ru/", 
-                "descricao": "Garante aos estudantes classificados socioeconomicamente o direito de realizar as refeições (almoço e jantar) de forma totalmente gratuita nos refeitórios da UFC. Essencial para a permanência estudantil."
-            },
-            {
-                "titulo": "PIBITI (Iniciação em Desenvolvimento Tecnológico)", 
-                "orgao_emissor": "PRPPG / UFC Inova", 
-                "tipo": "Inovação", 
-                "link_edital": "https://prppg.ufc.br/pt/editais-pibiti/", 
-                "descricao": "Focado em estudantes de graduação que atuam em projetos de pesquisa aplicada, desenvolvimento tecnológico e inovação. Exige dedicação ao projeto e não possuir vínculo empregatício. Benefício mensal padrão de R$ 700,00."
-            },
-            {
-                "titulo": "Programa de Promoção da Cultura Artística (Bolsa Arte)", 
-                "orgao_emissor": "SECULT (Secretaria de Cultura da UFC)", 
-                "tipo": "Cultura/Extensão", 
-                "link_edital": "https://secult.ufc.br/pt/bolsa-arte/", 
-                "descricao": "Destinada a alunos que desenvolvem projetos artísticos e culturais aprovados pela SECULT. Carga horária de 12 horas semanais, promovendo a arte dentro e fora dos campi. Benefício de R$ 700,00 mensais."
-            },
-            {
-                "titulo": "BIA-PCD (Estudantes com Deficiência)", 
-                "orgao_emissor": "Secretaria de Acessibilidade / PRAE", 
-                "tipo": "Inclusão", 
-                "link_edital": "https://acessibilidade.ufc.br/", 
-                "descricao": "Bolsa de iniciação acadêmica com edital específico para estudantes com deficiência (PCD), visando a inclusão, permanência e o incentivo à vivência universitária. R$ 700,00 mensais."
-            }
+            {"titulo": "Bolsa de Iniciação Acadêmica (BIA 2026)", "orgao_emissor": "PRAE (Pró-Reitoria de Assistência Estudantil)", "tipo": "Auxílio Estudantil", "link_edital": "https://prae.ufc.br/pt/edital-no-01-2026-prae-ufc-bolsa-de-iniciacao-academica/", "descricao": "Destinada a estudantes de graduação presencial em situação de vulnerabilidade socioeconômica comprovada pela PRAE. Exige dedicação de 12 horas semanais em projetos acadêmicos e não permite acúmulo com outras bolsas ou emprego formal. Benefício de R$ 700,00 mensais com vigência até 31 de dezembro de 2026."},
+            {"titulo": "Programa de Iniciação à Docência (PID 2026)", "orgao_emissor": "PROGRAD (Pró-Reitoria de Graduação)", "tipo": "Monitoria", "link_edital": "https://prograd.ufc.br/pt/edital-pid-no-19-2025-distribuicao-das-vagas-e-pontuacao-da-selecao-de-projetos-de-monitoria-de-iniciacao-a-docencia-em-2026/", "descricao": "Voltada para alunos de graduação que desejam atuar como monitores, auxiliando professores no processo de ensino-aprendizagem das disciplinas. Há disponibilidade de vagas remuneradas (bolsa mensal) e voluntárias, dependendo da classificação no processo seletivo do departamento."},
+            {"titulo": "Programa de Bolsas de Extensão Universitária 2026", "orgao_emissor": "PREX (Pró-Reitoria de Extensão)", "tipo": "Extensão", "link_edital": "https://prex.ufc.br/pt/prex-lanca-edital-do-programa-de-bolsas-de-extensao-universitaria-2026/", "descricao": "Destinada a estudantes que atuarão em projetos e programas de extensão previamente aprovados e cadastrados na PREX, promovendo a interação entre a universidade e a sociedade. Carga horária de 12 horas semanais. Benefício de R$ 700,00 mensais (vigência de abril a dezembro de 2026)."},
+            {"titulo": "Programa Institucional de Bolsas de Iniciação Científica (PIBIC 2025/2026)", "orgao_emissor": "PRPPG (Pró-Reitoria de Pesquisa e Pós-Graduação)", "tipo": "Iniciação Científica", "link_edital": "https://prppg.ufc.br/pt/prppg-editais-pibic/", "descricao": "Focada em despertar a vocação científica e incentivar talentos potenciais entre estudantes de graduação. O aluno atua em um projeto de pesquisa sob a orientação de um professor qualificado. Benefício de R$ 700,00 mensais financiadas por CNPq, FUNCAP ou pela própria UFC."},
+            {"titulo": "Programa Bolsa de Incentivo ao Desporto 2026", "orgao_emissor": "SESP-UFC (Secretaria de Esportes) / PRAE", "tipo": "Auxílio Estudantil", "link_edital": "https://desporto.ufc.br/pt/com-100-vagas-secretaria-de-esportes-da-ufc-sesp-ufc-e-pro-reitoria-de-assistencia-estudantil-prae-lancam-edital-para-o-programa-bolsa-de-incentivo-ao-desporto-2026/", "descricao": "Voltada para o fomento e apoio à prática esportiva universitária. Ofertará 100 vagas para estudantes participarem de atividades desportivas representando a universidade. Vigência de 10 meses (de março a dezembro de 2026)."},
+            {"titulo": "Auxílio Moradia", "orgao_emissor": "PRAE (Pró-Reitoria de Assistência Estudantil)", "tipo": "Auxílio Estudantil", "link_edital": "https://prae.ufc.br/pt/auxilio-moradia/", "descricao": "Destinado a estudantes de graduação presencial em situação de vulnerabilidade socioeconômica, cujas famílias residam em municípios diferentes da sede do campus onde estudam. O benefício é uma ajuda de custo mensal para despesas com aluguel e moradia."},
+            {"titulo": "Auxílio Creche", "orgao_emissor": "PRAE (Pró-Reitoria de Assistência Estudantil)", "tipo": "Auxílio Estudantil", "link_edital": "https://prae.ufc.br/pt/auxilio-creche/", "descricao": "Voltado para estudantes (mães ou pais) de graduação presencial em situação de vulnerabilidade, que possuam filhos sob sua guarda com idade entre 6 meses e 3 anos e 11 meses. Suporte financeiro mensal."},
+            {"titulo": "Isenção da Taxa do Restaurante Universitário (RU)", "orgao_emissor": "PRAE (Pró-Reitoria de Assistência Estudantil)", "tipo": "Auxílio Estudantil", "link_edital": "https://prae.ufc.br/pt/restaurante-universitario-ru/", "descricao": "Garante aos estudantes classificados socioeconomicamente o direito de realizar as refeições (almoço e jantar) de forma totalmente gratuita nos refeitórios da UFC. Essencial para a permanência estudantil."},
+            {"titulo": "PIBITI (Iniciação em Desenvolvimento Tecnológico)", "orgao_emissor": "PRPPG / UFC Inova", "tipo": "Inovação", "link_edital": "https://prppg.ufc.br/pt/editais-pibiti/", "descricao": "Focado em estudantes de graduação que atuam em projetos de pesquisa aplicada, desenvolvimento tecnológico e inovação. Exige dedicação ao projeto e não possuir vínculo empregatício. Benefício mensal padrão de R$ 700,00."},
+            {"titulo": "Programa de Promoção da Cultura Artística (Bolsa Arte)", "orgao_emissor": "SECULT (Secretaria de Cultura da UFC)", "tipo": "Cultura/Extensão", "link_edital": "https://secult.ufc.br/pt/bolsa-arte/", "descricao": "Destinada a alunos que desenvolvem projetos artísticos e culturais aprovados pela SECULT. Carga horária de 12 horas semanais, promovendo a arte dentro e fora dos campi. Benefício de R$ 700,00 mensais."},
+            {"titulo": "BIA-PCD (Estudantes com Deficiência)", "orgao_emissor": "Secretaria de Acessibilidade / PRAE", "tipo": "Inclusão", "link_edital": "https://acessibilidade.ufc.br/", "descricao": "Bolsa de iniciação acadêmica com edital específico para estudantes com deficiência (PCD), visando a inclusão, permanência e o incentivo à vivência universitária. R$ 700,00 mensais."}
         ]
+        for item in bolsas:
+            BolsaUFC.objects.get_or_create(
+                titulo=item['titulo'], 
+                defaults={
+                    'orgao_emissor': item['orgao_emissor'], 
+                    'tipo': item['tipo'], 
+                    'link_edital': item['link_edital'], 
+                    'descricao': item['descricao']
+                }
+            )
 
         # --- 3. DISCIPLINAS COMPLETAS E DETALHADAS ---
         disciplinas = [

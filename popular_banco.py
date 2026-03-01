@@ -12,7 +12,7 @@ print("Verificando segurança do administrador...")
 User = get_user_model()
 if not User.objects.filter(username='admin').exists():
 
-    User.objects.create_superuser('admin', 'admin@email.com', 'Ufc12345')
+    User.objects.create_superuser('admin', 'admin@email.com', 'SENHA_PROTEGIDA')
 
     print("Usuário admin criado com sucesso! Lembre-se de mudar a senha no painel /admin.")
 else:

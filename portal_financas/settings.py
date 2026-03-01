@@ -118,12 +118,16 @@ USE_TZ = True
 
 import os
 
+# Static files (CSS, JavaScript, Images)
 STATIC_URL = 'static/'
 
-
+# Local onde as imagens estão agora
 STATICFILES_DIRS = [
-    BASE_DIR / "static",
+    os.path.join(BASE_DIR, 'static'),
 ]
 
-# A pasta que o servidor vai criar para juntar e otimizar tudo para a web
-STATIC_ROOT = BASE_DIR / 'staticfiles'
+# Local onde o servidor vai organizar tudo (O Render usa esse!)
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# Configuração extra para o WhiteNoise não travar se faltar um arquivo
+WHITENOISE_MANIFEST_STORAGE = False

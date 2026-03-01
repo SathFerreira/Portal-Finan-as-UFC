@@ -117,6 +117,23 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 import os
+# --- TRUQUE PARA CRIAR ADMIN NO RENDER (GRÁTIS) ---
+from django.db.models.signals import post_migrate
+from django.dispatch import receiver
+
+@receiver(post_migrate)
+def create_superuser(sender, **kwargs):
+    from django.contrib.auth import get_user_model
+    User = get_user_model()
+    # ESCOLHA SEUS DADOS AQUI:
+    username = 'lexro' 
+    email = 'lexrodriferre2018@gmail.com'
+    password = 'lexrodriferre' # Coloque uma senha segura
+
+    if not User.objects.filter(username=username).exists():
+        User.objects.create_superuser(username, email, password)
+        print(f"ALERTA: Superusuário '{username}' criado com sucesso!")
+# --------------------------------------------------
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = 'static/'

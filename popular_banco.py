@@ -1,17 +1,22 @@
 import os
 import django
 
+# Configuração do ambiente Django
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'portal_financas.settings')
 django.setup()
 
 from django.contrib.auth import get_user_model
 from financeiro.models import TermoFinanceiro
 
-print("Verificando administrador...")
+print("Verificando segurança do administrador...")
 User = get_user_model()
 if not User.objects.filter(username='admin').exists():
+
     User.objects.create_superuser('admin', 'admin@email.com', 'Ufc12345')
-    print("Usuário admin recriado com sucesso!")
+
+    print("Usuário admin criado com sucesso! Lembre-se de mudar a senha no painel /admin.")
+else:
+    print("Administrador já existe. Nenhuma alteração de senha foi feita por segurança.")
 
 termos = [
    {"termo": "PIB (Produto Interno Bruto)", "definicao": "Soma de todos os bens e serviços finais produzidos em uma determinada região, durante um período determinado."},

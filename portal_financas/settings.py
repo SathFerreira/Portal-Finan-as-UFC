@@ -116,30 +116,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 import os
-from django.contrib.auth import get_user_model
 
-# --- SCRIPT DE ACESSO GARANTIDO ---
-try:
-    User = get_user_model()
-    # Mudamos o nome para 'admin_ufc' para forçar um novo registro limpo
-    username = 'Financas_ufc'
-    email = 'sathferreira@gmail.com'
-    password = 'SathzinlexferreRo'
-
-    if not User.objects.filter(username=username).exists():
-        User.objects.create_superuser(username, email, password)
-        print(f"SUCESSO: Usuario {username} criado!")
-    else:
-        u = User.objects.get(username=username)
-        u.set_password(password)
-        u.save()
-        print(f"SUCESSO: Senha de {username} atualizada!")
-except Exception as e:
-    print(f"Erro no admin: {e}")
-# ----------------------------------
-
-# Manter as configs de Static abaixo
 STATIC_URL = 'static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
+
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-WHITENOISE_MANIFEST_STORAGE = False
+
+WHITENOISE_MANIFEST_STORAGE = True

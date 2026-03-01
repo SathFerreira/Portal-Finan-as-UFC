@@ -6,7 +6,7 @@ __pycache__/
 *.pyc
 db.sqlite3
 
-# Pastas virtuais (caso você crie no futuro)
+# Pastas virtuais
 venv/
 env/
 .venv/

@@ -1,2 +1,1 @@
-web: gunicorn portal_financas.wsgi
-release: python manage.py migrate && python popular_banco.py
+web: bash -c "python manage.py migrate && python popular_banco.py && gunicorn portal_financas.wsgi"

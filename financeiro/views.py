@@ -54,10 +54,8 @@ def links_essenciais(request):
 def materiais(request):
     return render(request, 'financeiro/materiais.html')
 # --- ROTA SECRETA PARA POPULAR O BANCO DE DADOS ---
+# --- ROTA SECRETA PARA POPULAR O BANCO DE DADOS ---
 def popular_banco_secreto(request):
-    try:
-        # 1. LINKS ESSENCIAIS (Manteve igual, pois passou sem erros)
-       def popular_banco_secreto(request):
     try:
         # 1. LINKS ESSENCIAIS
         # Removemos para garantir que os ícones e descrições fiquem atualizados
@@ -70,7 +68,7 @@ def popular_banco_secreto(request):
         for item in links:
             LinkEssencial.objects.create(**item)
 
-        # 2. BOLSAS (ADICIONADO O LOOP DE SALVAMENTO)
+        # 2. BOLSAS
         bolsas = [
             {"titulo": "Bolsa de Iniciação Acadêmica (BIA 2026)", "orgao_emissor": "PRAE (Pró-Reitoria de Assistência Estudantil)", "tipo": "Auxílio Estudantil", "link_edital": "https://prae.ufc.br/pt/edital-no-01-2026-prae-ufc-bolsa-de-iniciacao-academica/", "descricao": "Destinada a estudantes de graduação presencial em situação de vulnerabilidade socioeconômica comprovada pela PRAE. Exige dedicação de 12 horas semanais em projetos acadêmicos e não permite acúmulo com outras bolsas ou emprego formal. Benefício de R$ 700,00 mensais com vigência até 31 de dezembro de 2026."},
             {"titulo": "Programa de Iniciação à Docência (PID 2026)", "orgao_emissor": "PROGRAD (Pró-Reitoria de Graduação)", "tipo": "Monitoria", "link_edital": "https://prograd.ufc.br/pt/edital-pid-no-19-2025-distribuicao-das-vagas-e-pontuacao-da-selecao-de-projetos-de-monitoria-de-iniciacao-a-docencia-em-2026/", "descricao": "Voltada para alunos de graduação que desejam atuar como monitores, auxiliando professores no processo de ensino-aprendizagem das disciplinas. Há disponibilidade de vagas remuneradas (bolsa mensal) e voluntárias, dependendo da classificação no processo seletivo do departamento."},
@@ -95,7 +93,7 @@ def popular_banco_secreto(request):
                 }
             )
 
-        # --- 3. DISCIPLINAS COMPLETAS E DETALHADAS ---
+        # 3. DISCIPLINAS
         disciplinas = [
             {"nome": "Introdução à Economia", "semestre": 1, "dificuldade": 3, "descricao": "Aborda os fundamentos da teoria econômica, micro e macroeconomia. Analisa o funcionamento dos mercados, oferta, demanda, e agregados macroeconômicos iniciais (PIB, inflação, desemprego)."},
             {"nome": "Matemática para Finanças I", "semestre": 1, "dificuldade": 5, "descricao": "Foco em Cálculo Diferencial. Limites, continuidade e derivadas aplicadas a problemas de otimização de funções de uma variável, visando maximização de lucros e minimização de custos."},
@@ -114,9 +112,16 @@ def popular_banco_secreto(request):
             {"nome": "Finanças Internacionais", "semestre": 8, "dificuldade": 4, "descricao": "Mercados de câmbio, balanço de pagamentos, e paridade do poder de compra em um cenário globalizado."}
         ]
         for item in disciplinas:
-            Disciplina.objects.get_or_create(nome=item['nome'], defaults={'semestre': item['semestre'], 'dificuldade': item['dificuldade'], 'descricao': item['descricao']})
+            Disciplina.objects.get_or_create(
+                nome=item['nome'], 
+                defaults={
+                    'semestre': item['semestre'], 
+                    'dificuldade': item['dificuldade'], 
+                    'descricao': item['descricao']
+                }
+            )
 
         return HttpResponse("<h1 style='color: green;'>SUCESSO ABSOLUTO! BANCO POPULADO!</h1>")
-    
+
     except Exception as e:
         return HttpResponse(f"<h1 style='color: red;'>ERRO:</h1><h2>{e}</h2>")

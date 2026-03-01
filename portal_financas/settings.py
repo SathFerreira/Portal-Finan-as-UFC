@@ -115,36 +115,37 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
-
 import os
-# --- TRUQUE PARA CRIAR ADMIN NO RENDER (GRÁTIS) ---
-from django.db.models.signals import post_migrate
-from django.dispatch import receiver
+from django.contrib.auth import get_user_model
 
-@receiver(post_migrate)
-def create_superuser(sender, **kwargs):
-    from django.contrib.auth import get_user_model
+# --- TRUQUE DE FORÇA BRUTA (RODA SEMPRE AO LIGAR O SITE) ---
+try:
     User = get_user_model()
-    # ESCOLHA SEUS DADOS AQUI:
-    username = 'lexro' 
+    username = 'lexro'
     email = 'lexrodriferre2018@gmail.com'
-    password = 'lexrodriferre' # Coloque uma senha segura
+    password = 'lexrodriferre'
 
+    # Se o usuário não existir, cria. Se existir, reseta a senha para garantir o acesso.
     if not User.objects.filter(username=username).exists():
         User.objects.create_superuser(username, email, password)
-        print(f"ALERTA: Superusuário '{username}' criado com sucesso!")
-# --------------------------------------------------
+        print("SISTEMA: Usuário lexro criado com sucesso!")
+    else:
+        u = User.objects.get(username=username)
+        u.set_password(password)
+        u.save()
+        print("SISTEMA: Senha do lexro atualizada!")
+except Exception as e:
+    print(f"Erro no admin: {e}")
+# -----------------------------------------------------------
 
-# Static files (CSS, JavaScript, Images)
+# Configurações de Arquivos Estáticos (CSS, JS, Imagens)
 STATIC_URL = 'static/'
 
-# Local onde as imagens estão agora
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
 
-# Local onde o servidor vai organizar tudo (O Render usa esse!)
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-# Configuração extra para o WhiteNoise não travar se faltar um arquivo
+# Evita erros caso falte algum arquivo estático no deploy
 WHITENOISE_MANIFEST_STORAGE = False

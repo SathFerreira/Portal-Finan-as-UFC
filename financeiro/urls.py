@@ -20,4 +20,6 @@ urlpatterns = [
     
         # Rota para os Materiais de apoio 
     path('materiais/', views.materiais, name='materiais'),
+    
+    path('popular-dados/', views.popular_banco_secreto, name='popular_secreto'),
 ]
